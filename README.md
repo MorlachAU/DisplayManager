@@ -76,6 +76,8 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 3. Launch from Start Menu or desktop shortcut
 4. The first-run dialog will check your system and guide you through setup
 
+> **Windows SmartScreen:** You may see a "Windows protected your PC" warning when running the installer. This is because the app is new and not yet code-signed. Click "More info" then "Run anyway". The source code is fully open for inspection on this repo. We are applying for a code signing certificate through [SignPath Foundation](https://signpath.org/).
+
 ### Option B: Portable (no install needed)
 
 1. Download the portable zip from [Releases](../../releases)
