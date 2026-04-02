@@ -299,19 +299,31 @@ class AppDetector:
     PRODUCTIVITY_APPS = {
         # Microsoft Office
         "winword.exe", "excel.exe", "powerpnt.exe", "outlook.exe",
-        "onenote.exe", "mspub.exe", "msaccess.exe",
+        "onenote.exe", "mspub.exe", "msaccess.exe", "visio.exe", "msteams.exe",
         # Microsoft 365 / Teams
         "teams.exe", "ms-teams.exe",
         # Browsers
-        "chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "opera.exe", "vivaldi.exe",
+        "chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "opera.exe", "vivaldi.exe", "arc.exe",
         # Communication
-        "slack.exe", "discord.exe", "zoom.exe", "webex.exe",
+        "slack.exe", "discord.exe", "zoom.exe", "webex.exe", "signal.exe", "telegram.exe",
+        # Code editors / IDEs
+        "code.exe", "devenv.exe", "idea64.exe", "pycharm64.exe", "webstorm64.exe",
+        "rider64.exe", "clion64.exe", "goland64.exe", "sublime_text.exe", "atom.exe",
+        # Text editors
+        "notepad.exe", "notepad++.exe", "wordpad.exe",
+        # Terminal / shell
+        "windowsterminal.exe", "cmd.exe", "powershell.exe", "pwsh.exe",
+        "wt.exe", "conhost.exe", "mintty.exe",
         # File managers / productivity
-        "explorer.exe", "dopus.exe",
+        "explorer.exe", "dopus.exe", "totalcmd64.exe", "totalcmd.exe",
         # Note taking / docs
-        "notion.exe", "obsidian.exe", "evernote.exe",
-        # PDF
-        "acrobat.exe", "acrord32.exe", "foxitreader.exe",
+        "notion.exe", "obsidian.exe", "evernote.exe", "todoist.exe",
+        # PDF / reading
+        "acrobat.exe", "acrord32.exe", "foxitreader.exe", "sumatrapdf.exe",
+        # Design / creative
+        "photoshop.exe", "illustrator.exe", "figma.exe", "gimp-2.10.exe",
+        # Remote / admin
+        "mstsc.exe", "putty.exe", "winscp.exe", "filezilla.exe",
     }
 
     def _detect_productivity(self, exe_path):
