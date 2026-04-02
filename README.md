@@ -20,22 +20,29 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 ## Features
 
 ### Core
-- **Three display profiles** — Work, Code, and Game, each with independent settings
+- **Four display profiles** — Work, Code, Game, and Cinema, each with independent settings
+- **Multi-monitor support** — Automatically detects and controls all DDC/CI monitors
 - **Brightness control** — DDC/CI hardware backlight adjustment (not software dimming)
 - **Colour temperature** — Direct gamma ramp control from 1200K (warm amber) to 6500K (neutral daylight)
 - **Refresh rate switching** — Change monitor refresh rate per profile (e.g., 60Hz for work, 100Hz+ for gaming)
 - **System tray app** — Minimal footprint, always one click away
 
 ### Automation
-- **Global hotkeys** — Ctrl+Alt+1/2/3 for instant profile switching (configurable)
-- **Sunrise/sunset auto-switching** — Automatically shifts to a warm profile at sunset and back at sunrise, based on your location
+- **Global hotkeys** — Ctrl+Alt+1/2/3/4 for instant profile switching (configurable)
+- **Ambient mode** — Colour temperature gradually shifts throughout the day following the sun's position (warm at night, neutral at noon)
+- **Sunrise/sunset auto-switching** — Automatically shifts to a configured profile at sunset and sunrise
 - **Time-based scheduling** — Set fixed times to switch profiles (e.g., Work at 8am, Code at 6pm)
 - **Monitor wake recovery** — Automatically re-applies your profile when the display wakes from sleep
 
 ### Extras
+- **Cinema mode** — A dedicated profile for movie watching (30% brightness, 3500K warm, purple tray icon)
+- **Panic button** — Ctrl+Alt+P instantly switches to Work mode (for when the boss walks in)
 - **Quick Dim** — Ctrl+Alt+D instantly drops brightness to 10% and back
 - **Profile Lock** — Ctrl+Alt+L prevents scheduled switches from interrupting your gaming session
-- **Per-profile tray icon colours** — Blue (Work), Amber (Code), Green (Game) so you know the active mode at a glance
+- **Disco mode** — Ctrl+Alt+Shift+D for 5 seconds of wild colour cycling (easter egg)
+- **Usage stats** — Track hours spent in each profile per day/week with visual bar charts
+- **Notification toasts** — Windows notifications on profile switch (toggle-able)
+- **Per-profile tray icon colours** — Blue (Work), Amber (Code), Green (Game), Purple (Cinema)
 - **Colour-coded lock indicator** — Red dot on the tray icon when profile lock is active
 - **IP-based location detection** — One-click setup for sunrise/sunset feature
 - **First-run system check** — Verifies DDC/CI, detects conflicts (f.lux), shows available refresh rates
@@ -84,7 +91,7 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 | Method | Action |
 |--------|--------|
 | **Tray menu** | Right-click the tray icon, click a profile name |
-| **Hotkey** | Ctrl+Alt+1 (Work), Ctrl+Alt+2 (Code), Ctrl+Alt+3 (Game) |
+| **Hotkey** | Ctrl+Alt+1 (Work), Ctrl+Alt+2 (Code), Ctrl+Alt+3 (Game), Ctrl+Alt+4 (Cinema) |
 | **Schedule** | Automatic — configure in Settings > Schedule |
 
 ### Hotkeys
@@ -94,8 +101,11 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 | Ctrl+Alt+1 | Switch to Work profile |
 | Ctrl+Alt+2 | Switch to Code profile |
 | Ctrl+Alt+3 | Switch to Game profile |
+| Ctrl+Alt+4 | Switch to Cinema profile |
 | Ctrl+Alt+D | Quick Dim toggle (10% brightness) |
 | Ctrl+Alt+L | Profile Lock toggle |
+| Ctrl+Alt+P | Panic button (instant Work mode) |
+| Ctrl+Alt+Shift+D | Disco mode (5 second easter egg) |
 
 Profile hotkeys are configurable in Settings > Profiles.
 
@@ -105,7 +115,8 @@ Right-click the tray icon and click **Settings** to open the configuration windo
 
 - **Profiles tab** — Adjust brightness, colour temperature, refresh rate, and hotkey for each profile. Use "Revert to Default" to reset a profile.
 - **Schedule tab** — Enable sunrise/sunset auto-switching (click "Detect" to set your location automatically) or add fixed time rules.
-- **General tab** — Auto-start toggle, transition speed, hotkey reference, and current status display.
+- **General tab** — Auto-start, notifications, ambient mode, transition speed, hotkey reference, and current status.
+- **Stats tab** — Visual bar charts showing time spent in each profile today and this week.
 
 ### Profile Lock
 
@@ -124,6 +135,7 @@ When gaming, you don't want a scheduled switch interrupting you. Press **Ctrl+Al
 | **Work** | 80% | 6500K (neutral) | 60 Hz | Documents, dashboards, video calls |
 | **Code** | 50% | 5000K (warm) | 60 Hz | Dark theme coding, evening sessions |
 | **Game** | 75% | 6500K (neutral) | 100 Hz | Colour accuracy, smooth gameplay |
+| **Cinema** | 30% | 3500K (warm) | No change | Movie watching, cosy vibes |
 
 All values are fully customisable per profile.
 
