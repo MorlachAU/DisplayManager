@@ -532,12 +532,30 @@ class SettingsWindow:
 
         # Game detection profile
         gf = ctk.CTkFrame(tab, fg_color="transparent")
-        gf.pack(padx=10, fill="x", pady=(0, 5))
+        gf.pack(padx=10, fill="x", pady=(0, 3))
         ctk.CTkLabel(gf, text="When a game is detected, switch to:").pack(side="left", padx=5)
         self._game_profile_var = ctk.StringVar(value=self.config.get("game_detect_profile", "Game"))
         ctk.CTkOptionMenu(gf, values=self.pm.get_profile_names(),
                            variable=self._game_profile_var, width=120,
                            command=lambda v: self.config.set("game_detect_profile", v)).pack(side="left", padx=5)
+
+        # Productivity detection profile
+        self._productivity_enabled_var = ctk.BooleanVar(
+            value=self.config.get("productivity_detect_enabled", False))
+        ctk.CTkSwitch(
+            tab, text="Detect productivity apps (Office, browsers, Teams, etc.)",
+            variable=self._productivity_enabled_var,
+            command=lambda: self.config.set("productivity_detect_enabled",
+                                             self._productivity_enabled_var.get())
+        ).pack(padx=15, pady=(3, 2), anchor="w")
+
+        pf = ctk.CTkFrame(tab, fg_color="transparent")
+        pf.pack(padx=10, fill="x", pady=(0, 5))
+        ctk.CTkLabel(pf, text="When a productivity app is detected, switch to:").pack(side="left", padx=5)
+        self._prod_profile_var = ctk.StringVar(value=self.config.get("productivity_detect_profile", "Work"))
+        ctk.CTkOptionMenu(pf, values=self.pm.get_profile_names(),
+                           variable=self._prod_profile_var, width=120,
+                           command=lambda v: self.config.set("productivity_detect_profile", v)).pack(side="left", padx=5)
 
         # Custom app rules
         ctk.CTkLabel(tab, text="Custom App Rules", anchor="w",

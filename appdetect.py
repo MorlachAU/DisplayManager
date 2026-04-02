@@ -295,6 +295,32 @@ class AppDetector:
                     return profile
         return None
 
+    # Known productivity app executables
+    PRODUCTIVITY_APPS = {
+        # Microsoft Office
+        "winword.exe", "excel.exe", "powerpnt.exe", "outlook.exe",
+        "onenote.exe", "mspub.exe", "msaccess.exe",
+        # Microsoft 365 / Teams
+        "teams.exe", "ms-teams.exe",
+        # Browsers
+        "chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "opera.exe", "vivaldi.exe",
+        # Communication
+        "slack.exe", "discord.exe", "zoom.exe", "webex.exe",
+        # File managers / productivity
+        "explorer.exe", "dopus.exe",
+        # Note taking / docs
+        "notion.exe", "obsidian.exe", "evernote.exe",
+        # PDF
+        "acrobat.exe", "acrord32.exe", "foxitreader.exe",
+    }
+
+    def _detect_productivity(self, exe_path):
+        """Detect if the foreground app is a known productivity app."""
+        if not exe_path:
+            return False
+        exe_name = os.path.basename(exe_path).lower()
+        return exe_name in self.PRODUCTIVITY_APPS
+
     def _detect_game(self, exe_path):
         """Detect if the foreground app is a game using layered detection.
         Returns True if it's a game."""
@@ -358,7 +384,7 @@ class AppDetector:
                     self._app_switch(user_profile)
                 continue
 
-            # Check game detection
+            # Check game detection (priority over productivity)
             if self._detect_game(exe_path):
                 game_profile = self.config.get("game_detect_profile", "Game")
                 if self.pm.get_active() != game_profile:
@@ -367,6 +393,18 @@ class AppDetector:
                     self._active_app_exe = exe_path
                     self._active_app_pid = fg_pid
                     self._app_switch(game_profile)
+                continue
+
+            # Check productivity detection
+            if (self.config.get("productivity_detect_enabled", False)
+                    and self._detect_productivity(exe_path)):
+                prod_profile = self.config.get("productivity_detect_profile", "Work")
+                if self.pm.get_active() != prod_profile:
+                    if self._pre_app_profile is None:
+                        self._pre_app_profile = self.pm.get_active()
+                    self._active_app_exe = exe_path
+                    self._active_app_pid = fg_pid
+                    self._app_switch(prod_profile)
                 continue
 
     def _get_foreground_pid(self):

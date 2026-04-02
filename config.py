@@ -39,6 +39,8 @@ DEFAULTS = {
     },
     "app_aware_enabled": True,
     "game_detect_profile": "Game",
+    "productivity_detect_enabled": False,
+    "productivity_detect_profile": "Work",
     "app_rules": [],
     "stats": {},
 }
