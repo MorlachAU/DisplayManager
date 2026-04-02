@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/Platform-Windows%2010%2F11-blue" alt="Platform">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
   <img src="https://img.shields.io/badge/MouseWheel_Digital-Product-00c8a0" alt="MouseWheel Digital">
+  <a href="https://buymeacoffee.com/mousewheeldigital"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-Support-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me A Coffee"></a>
 </p>
 
 # Display Manager
@@ -260,6 +261,14 @@ The output will be in `dist/DisplayManager/`. Zip the entire folder to distribut
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## Support the Project
+
+Display Manager is free and open source. If you find it useful and want to support development:
+
+<a href="https://buymeacoffee.com/mousewheeldigital"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-Support-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me A Coffee"></a>
 
 ---
 

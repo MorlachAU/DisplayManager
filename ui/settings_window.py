@@ -680,11 +680,21 @@ class SettingsWindow:
         ctk.CTkButton(tab, text="Refresh Status", width=120,
                        command=self._refresh_status).pack(padx=10, pady=3, anchor="w")
 
-        # Version
-        ctk.CTkLabel(tab, text="Display Manager v1.0 — MouseWheel Digital",
-                      text_color="gray").pack(padx=15, pady=(3, 0), anchor="w")
+        # Version + support
+        vf = ctk.CTkFrame(tab, fg_color="transparent")
+        vf.pack(padx=15, pady=(3, 0), fill="x")
+        ctk.CTkLabel(vf, text="Display Manager v1.0 — MouseWheel Digital",
+                      text_color="gray").pack(side="left")
+        ctk.CTkButton(vf, text="Buy Me a Coffee", width=130, height=24,
+                       fg_color="#FFDD00", text_color="black",
+                       font=ctk.CTkFont(size=11),
+                       command=self._open_donate).pack(side="right")
         ctk.CTkLabel(tab, text="mousewheeldigital.com", text_color="gray",
                       font=ctk.CTkFont(size=11)).pack(padx=15, anchor="w")
+
+    def _open_donate(self):
+        import webbrowser
+        webbrowser.open("https://buymeacoffee.com/mousewheeldigital")
 
     def _on_autostart_toggle(self):
         enabled = self._autostart_var.get()
