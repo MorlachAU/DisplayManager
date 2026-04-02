@@ -61,6 +61,8 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 
 ## Installation
 
+**No additional software required.** Display Manager is fully self-contained — it controls your display directly through Windows APIs. No need to install f.lux, ClickMonitorDDC, Monitorian, or any other display utility.
+
 ### Option A: Download the release (no Python needed)
 
 1. Download the latest release from [Releases](../../releases)
