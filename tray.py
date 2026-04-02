@@ -109,10 +109,14 @@ class TrayApp:
         return self._icons.get(name, self._default_icon)
 
     def _build_menu(self):
-        """Build the tray context menu."""
-        profile_items = []
+        """Build the tray context menu (static, used at startup)."""
+        return pystray.Menu(lambda: self._build_menu_items())
+
+    def _build_menu_items(self):
+        """Build menu items dynamically — called each time the menu opens."""
+        items = []
         for name in self.pm.get_profile_names():
-            profile_items.append(
+            items.append(
                 pystray.MenuItem(
                     name,
                     self._make_switch_handler(name),
@@ -121,15 +125,15 @@ class TrayApp:
                 )
             )
 
+        items.append(pystray.MenuItem(
+            "Ambient",
+            self._on_ambient_click,
+            checked=lambda item: self.config.get("ambient_mode", False),
+        ))
+
         lock_text = "Unlock Profile" if self.pm.is_locked() else "Lock Profile"
 
-        return pystray.Menu(
-            *profile_items,
-            pystray.MenuItem(
-                "Ambient",
-                self._on_ambient_click,
-                checked=lambda item: self.config.get("ambient_mode", False),
-            ),
+        items.extend([
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("PANIC! (Work mode)", self._on_panic_click),
             pystray.MenuItem(lock_text, self._on_lock_click),
@@ -138,7 +142,8 @@ class TrayApp:
             pystray.MenuItem("Settings", self._on_settings_click),
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("Quit", self._on_quit_click),
-        )
+        ])
+        return items
 
     def _make_switch_handler(self, profile_name):
         """Create a menu handler for switching to a specific profile."""
@@ -196,7 +201,7 @@ class TrayApp:
             "DisplayManager",
             self._get_icon_for_profile(active),
             title=self._build_title(active),
-            menu=self._build_menu(),
+            menu=pystray.Menu(lambda: self._build_menu_items()),
         )
         self._thread = threading.Thread(target=self._icon.run, daemon=True)
         self._thread.start()
