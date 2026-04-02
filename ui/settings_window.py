@@ -171,8 +171,13 @@ class SettingsWindow:
                        command=self._apply_preview).pack(side="left", padx=5)
         ctk.CTkButton(btnf, text="Save", width=100,
                        command=self._save_profile).pack(side="left", padx=5)
-        ctk.CTkButton(btnf, text="Revert to Default", width=130, fg_color="gray30",
+
+        btnf2 = ctk.CTkFrame(tab, fg_color="transparent")
+        btnf2.pack(padx=10, fill="x")
+        ctk.CTkButton(btnf2, text="Revert to Default", width=130, fg_color="gray30",
                        command=self._revert_profile).pack(side="left", padx=5)
+        ctk.CTkButton(btnf2, text="Restore All Defaults", width=140, fg_color="gray30",
+                       command=self._restore_all_defaults).pack(side="left", padx=5)
 
         # Status
         self._profile_status = ctk.CTkLabel(tab, text="", text_color="gray")
@@ -230,26 +235,38 @@ class SettingsWindow:
 
     def _delete_profile(self):
         """Delete the selected profile."""
-        from config import DEFAULTS
         name = self._selected_profile.get()
-        # Protect built-in profiles
-        if name in DEFAULTS.get("profiles", {}):
-            self._profile_status.configure(text=f"Cannot delete built-in profile '{name}'")
+        profiles = self.config.get_all_profiles()
+        # Must keep at least one profile
+        if len(profiles) <= 1:
+            self._profile_status.configure(text="Cannot delete the last profile")
             return
         # Remove from config
-        profiles = self.config.get_all_profiles()
         if name in profiles:
             del profiles[name]
             self.config.set("profiles", profiles)
-        # If active profile was deleted, switch to Work
+        # If active profile was deleted, switch to first remaining
         if self.pm.get_active() == name:
-            self.pm.switch("Work", force=True)
+            first = list(profiles.keys())[0]
+            self.pm.switch(first, force=True)
         # Rebuild selector
         remaining = list(profiles.keys())
         self._rebuild_selector(remaining[0] if remaining else "Work")
         if self.hk:
             self.hk.reload()
         self._profile_status.configure(text=f"Deleted profile '{name}'")
+
+    def _restore_all_defaults(self):
+        """Restore all built-in profiles to factory defaults (keeps custom profiles)."""
+        from config import DEFAULTS
+        profiles = self.config.get_all_profiles()
+        for name, default_profile in DEFAULTS["profiles"].items():
+            profiles[name] = dict(default_profile)
+        self.config.set("profiles", profiles)
+        self._rebuild_selector(self._selected_profile.get())
+        if self.hk:
+            self.hk.reload()
+        self._profile_status.configure(text="Restored all default profiles")
 
     def _rebuild_selector(self, select_name=None):
         """Rebuild the profile selector with current profiles."""
