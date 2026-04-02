@@ -106,19 +106,20 @@ def reset_colour_temperature():
 
 
 # ============================================================
-# DDC/CI Brightness via monitorcontrol
+# DDC/CI Brightness via monitorcontrol (multi-monitor)
 # ============================================================
 
-_cached_monitor = None
+_cached_monitors = None
 _monitor_lock = threading.Lock()
 
 
-def _get_working_monitor():
-    """Find and cache the first responding DDC/CI monitor."""
-    global _cached_monitor
+def _get_working_monitors():
+    """Find and cache all responding DDC/CI monitors."""
+    global _cached_monitors
     with _monitor_lock:
-        if _cached_monitor is not None:
-            return _cached_monitor
+        if _cached_monitors is not None:
+            return _cached_monitors
+        found = []
         try:
             from monitorcontrol import get_monitors
             monitors = get_monitors()
@@ -126,39 +127,59 @@ def _get_working_monitor():
                 try:
                     with monitor:
                         monitor.get_luminance()
-                    _cached_monitor = monitor
-                    return monitor
+                    found.append(monitor)
                 except Exception:
                     continue
         except Exception:
             pass
-        return None
+        _cached_monitors = found
+        return found
 
 
-def get_brightness():
-    """Read current brightness (0-100). Returns None on failure."""
-    monitor = _get_working_monitor()
-    if monitor is None:
+def get_monitor_count():
+    """Return number of responding DDC/CI monitors."""
+    return len(_get_working_monitors())
+
+
+def get_brightness(monitor_index=None):
+    """Read current brightness (0-100). Returns None on failure.
+    If monitor_index is None, reads from the first monitor."""
+    monitors = _get_working_monitors()
+    if not monitors:
         return None
+    if monitor_index is not None:
+        if monitor_index >= len(monitors):
+            return None
+        targets = [monitors[monitor_index]]
+    else:
+        targets = [monitors[0]]
     try:
-        with monitor:
-            return monitor.get_luminance()
+        with targets[0]:
+            return targets[0].get_luminance()
     except Exception:
         return None
 
 
-def set_brightness(value):
-    """Set brightness (0-100). Returns True on success."""
+def set_brightness(value, monitor_index=None):
+    """Set brightness (0-100). If monitor_index is None, sets all monitors."""
     value = max(0, min(100, value))
-    monitor = _get_working_monitor()
-    if monitor is None:
+    monitors = _get_working_monitors()
+    if not monitors:
         return False
-    try:
-        with monitor:
-            monitor.set_luminance(value)
-        return True
-    except Exception:
-        return False
+    if monitor_index is not None:
+        targets = [monitors[monitor_index]] if monitor_index < len(monitors) else []
+    else:
+        targets = monitors
+    success = False
+    for monitor in targets:
+        try:
+            with monitor:
+                monitor.set_luminance(value)
+            success = True
+            time.sleep(0.02)
+        except Exception:
+            pass
+    return success
 
 
 # ============================================================
@@ -361,3 +382,44 @@ def toggle_quick_dim():
 def is_dimmed():
     with _dim_lock:
         return _is_dimmed
+
+
+# ============================================================
+# Disco Mode (easter egg)
+# ============================================================
+
+_disco_running = False
+_disco_lock = threading.Lock()
+
+
+def start_disco(duration=5.0):
+    """Rapidly cycle through wild colour temperatures for a few seconds."""
+    global _disco_running
+    import random
+
+    with _disco_lock:
+        if _disco_running:
+            return
+        _disco_running = True
+
+    def run():
+        global _disco_running
+        start = time.time()
+        temps = [1500, 2000, 3000, 4000, 5500, 6500, 2500, 1800, 3500, 5000]
+        i = 0
+        while time.time() - start < duration:
+            t = temps[i % len(temps)]
+            # Add some randomness
+            t = max(1200, min(6500, t + random.randint(-500, 500)))
+            set_colour_temperature(t)
+            time.sleep(0.15)
+            i += 1
+        with _disco_lock:
+            _disco_running = False
+
+    threading.Thread(target=run, daemon=True).start()
+
+
+def is_disco_running():
+    with _disco_lock:
+        return _disco_running

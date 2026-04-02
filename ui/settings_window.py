@@ -15,6 +15,7 @@ class SettingsWindow:
         self.pm = profile_manager
         self.hk = None   # HotkeyManager — wired after construction
         self.sm = None   # ScheduleManager — wired after construction
+        self.stats = None  # StatsTracker — wired after construction
         self._root = None
         self._window = None
 
@@ -80,6 +81,7 @@ class SettingsWindow:
         self._build_profiles_tab(tabs.add("Profiles"))
         self._build_schedule_tab(tabs.add("Schedule"))
         self._build_general_tab(tabs.add("General"))
+        self._build_stats_tab(tabs.add("Stats"))
 
     # ── Profiles Tab ───────────────────────────────────────
 
@@ -434,10 +436,26 @@ class SettingsWindow:
             tab, text="Start with Windows",
             variable=self._autostart_var,
             command=self._on_autostart_toggle
-        ).pack(padx=15, pady=(15, 5), anchor="w")
+        ).pack(padx=15, pady=(10, 3), anchor="w")
+
+        # Notifications
+        self._notif_var = ctk.BooleanVar(value=self.config.get("notifications_enabled", True))
+        ctk.CTkSwitch(
+            tab, text="Show notifications on profile switch",
+            variable=self._notif_var,
+            command=lambda: self.config.set("notifications_enabled", self._notif_var.get())
+        ).pack(padx=15, pady=3, anchor="w")
+
+        # Ambient mode
+        self._ambient_var = ctk.BooleanVar(value=self.config.get("ambient_mode", False))
+        ctk.CTkSwitch(
+            tab, text="Ambient mode (gradual colour shift with sun)",
+            variable=self._ambient_var,
+            command=lambda: self.config.set("ambient_mode", self._ambient_var.get())
+        ).pack(padx=15, pady=3, anchor="w")
 
         # Transition speed
-        ctk.CTkLabel(tab, text="Transition Speed", anchor="w").pack(padx=15, pady=(10, 0), anchor="w")
+        ctk.CTkLabel(tab, text="Transition Speed", anchor="w").pack(padx=15, pady=(8, 0), anchor="w")
         tf = ctk.CTkFrame(tab, fg_color="transparent")
         tf.pack(padx=10, fill="x")
 
@@ -451,19 +469,19 @@ class SettingsWindow:
 
         # Hotkey info
         ctk.CTkLabel(tab, text="Hotkeys", anchor="w",
-                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(10, 2), anchor="w")
+                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(8, 2), anchor="w")
 
         hotkey_info = (
-            "Quick Dim: Ctrl+Alt+D (toggle 10% brightness)\n"
-            "Lock Profile: Ctrl+Alt+L (block scheduled switches)\n"
-            "Profiles: see Profiles tab for per-profile hotkeys"
+            "Quick Dim: Ctrl+Alt+D    Lock: Ctrl+Alt+L\n"
+            "Panic (Work): Ctrl+Alt+P    Disco: Ctrl+Alt+Shift+D\n"
+            "Profiles: Ctrl+Alt+1/2/3/4"
         )
         ctk.CTkLabel(tab, text=hotkey_info, justify="left", anchor="w",
-                      text_color="gray").pack(padx=20, anchor="w")
+                      text_color="gray", font=ctk.CTkFont(size=12)).pack(padx=20, anchor="w")
 
         # Status display
         ctk.CTkLabel(tab, text="Current Status", anchor="w",
-                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(10, 2), anchor="w")
+                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(8, 2), anchor="w")
 
         self._status_frame = ctk.CTkFrame(tab)
         self._status_frame.pack(padx=10, pady=2, fill="x")
@@ -472,14 +490,14 @@ class SettingsWindow:
             self._status_frame, text=self._get_status_text(),
             justify="left", anchor="w"
         )
-        self._status_label.pack(padx=15, pady=8, anchor="w")
+        self._status_label.pack(padx=15, pady=6, anchor="w")
 
         ctk.CTkButton(tab, text="Refresh Status", width=120,
-                       command=self._refresh_status).pack(padx=10, pady=5, anchor="w")
+                       command=self._refresh_status).pack(padx=10, pady=3, anchor="w")
 
         # Version
         ctk.CTkLabel(tab, text="Display Manager v1.0 — MouseWheel Digital",
-                      text_color="gray").pack(padx=15, pady=(5, 5), anchor="w")
+                      text_color="gray").pack(padx=15, pady=(3, 0), anchor="w")
         ctk.CTkLabel(tab, text="mousewheeldigital.com", text_color="gray",
                       font=ctk.CTkFont(size=11)).pack(padx=15, anchor="w")
 
@@ -503,13 +521,89 @@ class SettingsWindow:
         brightness = display.get_brightness()
         kelvin = display.get_colour_temperature()
         refresh = display.get_refresh_rate()
+        monitors = display.get_monitor_count()
         locked = self.pm.is_locked()
         dimmed = display.is_dimmed()
+        ambient = self.config.get("ambient_mode", False)
         b_str = f"{brightness}%" if brightness is not None else "Unknown"
         r_str = f"{refresh} Hz" if refresh else "Unknown"
         lock_str = " [LOCKED]" if locked else ""
         dim_str = " [DIMMED]" if dimmed else ""
-        return f"Profile: {active}{lock_str}{dim_str}\nBrightness: {b_str}\nColour Temp: {kelvin}K\nRefresh Rate: {r_str}"
+        amb_str = " [AMBIENT]" if ambient else ""
+        mon_str = f"{monitors} monitor(s)" if monitors > 1 else "1 monitor"
+        return f"Profile: {active}{lock_str}{dim_str}{amb_str}\nBrightness: {b_str}\nColour Temp: {kelvin}K\nRefresh Rate: {r_str}\nMonitors: {mon_str}"
 
     def _refresh_status(self):
         self._status_label.configure(text=self._get_status_text())
+
+    # ── Stats Tab ──────────────────────────────────────────
+
+    def _build_stats_tab(self, tab):
+        ctk.CTkLabel(tab, text="Usage Stats", anchor="w",
+                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(10, 5), anchor="w")
+
+        # Today
+        ctk.CTkLabel(tab, text="Today", anchor="w").pack(padx=15, pady=(5, 2), anchor="w")
+        self._today_stats_frame = ctk.CTkFrame(tab)
+        self._today_stats_frame.pack(padx=10, pady=2, fill="x")
+
+        # This week
+        ctk.CTkLabel(tab, text="This Week", anchor="w").pack(padx=15, pady=(10, 2), anchor="w")
+        self._week_stats_frame = ctk.CTkFrame(tab)
+        self._week_stats_frame.pack(padx=10, pady=2, fill="x")
+
+        ctk.CTkButton(tab, text="Refresh Stats", width=120,
+                       command=self._refresh_stats).pack(padx=10, pady=10, anchor="w")
+
+        self._refresh_stats()
+
+    def _refresh_stats(self):
+        """Refresh the stats display with bar charts."""
+        if not self.stats:
+            return
+
+        # Profile colours for bars
+        bar_colours = {
+            "Work": "#508CFF",
+            "Code": "#FFB432",
+            "Game": "#32C850",
+            "Cinema": "#B43CB4",
+        }
+        default_bar = "#6496FF"
+
+        # Today
+        for widget in self._today_stats_frame.winfo_children():
+            widget.destroy()
+        today = self.stats.get_today_stats()
+        self._draw_stat_bars(self._today_stats_frame, today, bar_colours, default_bar)
+
+        # Week
+        for widget in self._week_stats_frame.winfo_children():
+            widget.destroy()
+        week = self.stats.get_week_stats()
+        self._draw_stat_bars(self._week_stats_frame, week, bar_colours, default_bar)
+
+    def _draw_stat_bars(self, parent, data, colours, default_colour):
+        """Draw horizontal bar chart for stats data."""
+        if not data:
+            ctk.CTkLabel(parent, text="No data yet", text_color="gray").pack(padx=15, pady=8)
+            return
+
+        max_val = max(data.values()) if data else 1
+        for profile, seconds in sorted(data.items(), key=lambda x: -x[1]):
+            row = ctk.CTkFrame(parent, fg_color="transparent")
+            row.pack(fill="x", padx=10, pady=2)
+
+            # Label
+            duration = self.stats.format_duration(seconds)
+            ctk.CTkLabel(row, text=f"{profile}", width=60, anchor="w").pack(side="left")
+
+            # Bar
+            bar_width = max(10, int(250 * seconds / max_val)) if max_val > 0 else 10
+            colour = colours.get(profile, default_colour)
+            bar = ctk.CTkFrame(row, height=18, width=bar_width, fg_color=colour, corner_radius=4)
+            bar.pack(side="left", padx=5)
+            bar.pack_propagate(False)
+
+            # Duration text
+            ctk.CTkLabel(row, text=duration, text_color="gray", width=60).pack(side="left", padx=5)

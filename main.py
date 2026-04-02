@@ -18,6 +18,7 @@ from tray import TrayApp
 from hotkeys import HotkeyManager
 from scheduler import ScheduleManager
 from ui.settings_window import SettingsWindow
+from stats import StatsTracker
 import autostart
 
 
@@ -49,39 +50,51 @@ def main():
     # 4. Watchdog stop event
     watchdog_stop = threading.Event()
 
-    # 5. Quit handler
+    # 5. Stats tracker
+    stats = StatsTracker(config)
+    stats.start()
+    settings.stats = stats
+
+    # 6. Quit handler
     def quit_app():
         watchdog_stop.set()
+        stats.stop()
         hk.stop()
         sm.stop()
         tray.stop()
         display.reset_colour_temperature()
         root.after(0, root.quit)
 
-    # 6. Create and start tray
-    tray = TrayApp(pm, on_settings=settings.show, on_quit=quit_app)
-    pm.on_switch = tray.update_tooltip
+    # 7. Create and start tray
+    tray = TrayApp(pm, config, on_settings=settings.show, on_quit=quit_app)
+
+    # Wire callbacks — profile switch updates tray + stats
+    def on_switch(profile_name):
+        tray.update_tooltip(profile_name)
+        stats.on_profile_switch(profile_name)
+
+    pm.on_switch = on_switch
     pm.on_lock_change = lambda locked: tray._update_icon()
     tray.start()
 
-    # 7. Hotkeys
+    # 8. Hotkeys
     hk = HotkeyManager(pm, config)
     hk.start()
     settings.hk = hk
 
-    # 8. Scheduler
+    # 9. Scheduler
     sm = ScheduleManager(pm, config)
     sm.start()
     settings.sm = sm
 
-    # 9. Watchdog thread (monitor wake recovery)
+    # 10. Watchdog thread (monitor wake recovery)
     watchdog = threading.Thread(target=_run_watchdog, args=(pm, watchdog_stop), daemon=True)
     watchdog.start()
 
-    # 10. Sync auto-start registry with config
+    # 11. Sync auto-start registry with config
     autostart.sync_autostart(config)
 
-    # 11. Apply last-used profile on startup
+    # 12. Apply last-used profile on startup
     config.set("profile_lock", False)  # always start unlocked
     active = config.get_active_profile()
     pm.switch(active, force=True)
@@ -98,6 +111,7 @@ def main():
 
     # Cleanup after mainloop exits
     watchdog_stop.set()
+    stats.stop()
     hk.stop()
     sm.stop()
     display.reset_colour_temperature()

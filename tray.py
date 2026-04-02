@@ -13,6 +13,7 @@ PROFILE_COLOURS = {
     "Work": (80, 140, 255),    # Blue
     "Code": (255, 180, 50),    # Amber
     "Game": (50, 200, 80),     # Green
+    "Cinema": (180, 60, 180),  # Purple
 }
 DEFAULT_COLOUR = (100, 180, 255)
 LOCK_COLOUR = (220, 50, 50)
@@ -73,8 +74,9 @@ def _generate_icon(colour, size=64, locked=False):
 
 
 class TrayApp:
-    def __init__(self, profile_manager, on_settings=None, on_quit=None):
+    def __init__(self, profile_manager, config, on_settings=None, on_quit=None):
         self.pm = profile_manager
+        self.config = config
         self._on_settings = on_settings
         self._on_quit = on_quit
         self._icon = None
@@ -87,6 +89,12 @@ class TrayApp:
             self._icons[name] = _generate_icon(colour)
             self._icons_locked[name] = _generate_icon(colour, locked=True)
         self._default_icon = _generate_icon(DEFAULT_COLOUR)
+
+        # Generate icons for any profiles not in PROFILE_COLOURS
+        for name in self.pm.get_profile_names():
+            if name not in self._icons:
+                self._icons[name] = _generate_icon(DEFAULT_COLOUR)
+                self._icons_locked[name] = _generate_icon(DEFAULT_COLOUR, locked=True)
 
     def _get_icon_for_profile(self, name):
         """Get the appropriate icon for a profile, considering lock state."""
@@ -113,7 +121,10 @@ class TrayApp:
         return pystray.Menu(
             *profile_items,
             pystray.Menu.SEPARATOR,
+            pystray.MenuItem("PANIC! (Work mode)", self._on_panic_click),
             pystray.MenuItem(lock_text, self._on_lock_click),
+            pystray.MenuItem("Disco Mode", self._on_disco_click),
+            pystray.Menu.SEPARATOR,
             pystray.MenuItem("Settings", self._on_settings_click),
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("Quit", self._on_quit_click),
@@ -125,6 +136,27 @@ class TrayApp:
             # Manual switch always forces (bypasses lock)
             self.pm.switch(profile_name, force=True)
         return handler
+
+    def _on_panic_click(self, icon, item):
+        """PANIC! Instantly switch to Work and close settings."""
+        self.pm.switch("Work", force=True)
+
+    def _on_disco_click(self, icon, item):
+        """Easter egg: disco mode!"""
+        import display
+        if not display.is_disco_running():
+            # Remember current profile to restore after
+            active = self.pm.get_active()
+            display.start_disco(duration=5.0)
+            # Restore profile after disco ends
+            import threading
+            def restore():
+                import time
+                time.sleep(5.5)
+                profile = self.pm.config.get_profile(active)
+                if profile:
+                    display.set_colour_temperature(profile.get("colour_temp", 6500))
+            threading.Thread(target=restore, daemon=True).start()
 
     def _on_lock_click(self, icon, item):
         self.pm.toggle_lock()
@@ -167,6 +199,15 @@ class TrayApp:
         if self._icon:
             self._icon.title = self._build_title(profile_name)
             self._icon.icon = self._get_icon_for_profile(profile_name)
+            # Show notification toast
+            if self.config.get("notifications_enabled", True):
+                try:
+                    self._icon.notify(
+                        f"Switched to {profile_name}",
+                        "Display Manager"
+                    )
+                except Exception:
+                    pass
 
     def _update_icon(self):
         """Refresh the icon (e.g., after lock state change)."""

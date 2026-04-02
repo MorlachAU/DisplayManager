@@ -18,10 +18,13 @@ DEFAULTS = {
     "first_run_complete": False,
     "quick_dim_hotkey": "ctrl+alt+d",
     "profile_lock": False,
+    "ambient_mode": False,
+    "notifications_enabled": True,
     "profiles": {
         "Work": {"brightness": 80, "colour_temp": 6500, "hotkey": "ctrl+alt+1", "refresh_rate": 60},
         "Code": {"brightness": 50, "colour_temp": 5000, "hotkey": "ctrl+alt+2", "refresh_rate": 60},
         "Game": {"brightness": 75, "colour_temp": 6500, "hotkey": "ctrl+alt+3", "refresh_rate": 100},
+        "Cinema": {"brightness": 30, "colour_temp": 3500, "hotkey": "ctrl+alt+4", "refresh_rate": 0},
     },
     "schedule_rules": [
         {"time": "08:00", "profile": "Work"},
@@ -34,6 +37,7 @@ DEFAULTS = {
         "sunrise_profile": "Work",
         "sunset_profile": "Code",
     },
+    "stats": {},
 }
 
 

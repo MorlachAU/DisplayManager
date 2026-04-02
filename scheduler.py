@@ -6,6 +6,7 @@ Switches profiles based on fixed times or sunrise/sunset.
 import threading
 import datetime
 import schedule
+import display
 
 try:
     from astral import LocationInfo
@@ -121,10 +122,66 @@ class ScheduleManager:
                     self._sunset_time.strftime("%H:%M"))
         return None, None
 
+    def _apply_ambient_mode(self):
+        """Gradually shift colour temperature based on time of day relative to sun position."""
+        if not self.config.get("ambient_mode", False):
+            return
+        if not HAS_ASTRAL:
+            return
+
+        self._update_sun_times()
+        if self._sunrise_time is None or self._sunset_time is None:
+            return
+
+        import display
+        now = datetime.datetime.now()
+
+        # Calculate target colour temp based on sun position
+        # Sunrise -> noon: 5000K -> 6500K
+        # Noon -> sunset: 6500K -> 5000K
+        # Sunset -> sunset+2h: 5000K -> 3500K
+        # Night (after sunset+2h): 3500K
+        # Before sunrise: 3500K
+
+        sunrise = self._sunrise_time
+        sunset = self._sunset_time
+        noon = sunrise + (sunset - sunrise) / 2
+        evening_end = sunset + datetime.timedelta(hours=2)
+
+        if now < sunrise:
+            target_k = 3500
+        elif now < noon:
+            # Morning warming up
+            progress = (now - sunrise).total_seconds() / (noon - sunrise).total_seconds()
+            target_k = int(5000 + progress * 1500)
+        elif now < sunset:
+            # Afternoon cooling down
+            progress = (now - noon).total_seconds() / (sunset - noon).total_seconds()
+            target_k = int(6500 - progress * 1500)
+        elif now < evening_end:
+            # Evening dimming
+            progress = (now - sunset).total_seconds() / (evening_end - sunset).total_seconds()
+            target_k = int(5000 - progress * 1500)
+        else:
+            target_k = 3500
+
+        target_k = max(3500, min(6500, target_k))
+
+        # Only adjust if the difference is noticeable (>100K)
+        current_k = display.get_colour_temperature()
+        if abs(current_k - target_k) > 100:
+            display.set_colour_temperature(target_k)
+
+    def get_ambient_temp(self):
+        """Return what colour temp ambient mode would set right now."""
+        # Used by UI to display current ambient target
+        return display.get_colour_temperature() if self.config.get("ambient_mode", False) else None
+
     def _run_loop(self):
-        """Poll loop — runs pending jobs and sun checks every 60 seconds."""
+        """Poll loop — runs pending jobs, sun checks, and ambient mode every 60 seconds."""
         while not self._stop_event.is_set():
             if self.config.get("schedule_enabled", False):
                 schedule.run_pending()
             self._check_sun_schedule()
+            self._apply_ambient_mode()
             self._stop_event.wait(60)
