@@ -193,9 +193,46 @@ Settings are stored in `config.json` alongside the executable (or `main.py` if r
 
 ---
 
-## FYI
+## FAQ
 
-**Brief screen flash when switching refresh rates** — If your profiles use different refresh rates (e.g., 60Hz for Work, 100Hz for Game), you may see a brief black screen when switching between them. This is normal — Windows performs a full display mode change when the refresh rate changes, which momentarily blanks the screen. Switching between profiles with the same refresh rate (e.g., Work to Code) is instant with no flash.
+**Do I still need f.lux?**
+No. Display Manager controls colour temperature directly using the same technique f.lux uses (gamma ramp adjustment). You should close or uninstall f.lux — running both at the same time will cause them to fight over the gamma ramp and your display will flicker.
+
+**Does it work on laptops?**
+Yes. Brightness control works on laptop screens via WMI and on external monitors via DDC/CI. Colour temperature and refresh rate work on all displays.
+
+**What happens if I plug in a second monitor?**
+Display Manager detects all connected displays automatically. Brightness changes are applied to all monitors. Restart the app after connecting a new display for it to be detected.
+
+**Why does my screen go black briefly when switching to Game mode?**
+If your profiles use different refresh rates (e.g., 60Hz for Work, 100Hz for Game), Windows performs a full display mode change which momentarily blanks the screen. This is normal. Switching between profiles with the same refresh rate is instant.
+
+**What does the red dot on the tray icon mean?**
+Your profile is locked. This happens automatically when you manually select a profile (to prevent scheduled switches from overriding your choice). Right-click the tray icon and click "Unlock Profile" or press Ctrl+Alt+L to return to automatic mode.
+
+**What's the difference between Ambient mode and the sunrise/sunset schedule?**
+The sunrise/sunset schedule switches between two fixed profiles at sunrise and sunset. Ambient mode is more gradual — it continuously adjusts colour temperature throughout the day (neutral at noon, warm in the evening, very warm at night) like a smooth curve rather than a hard switch.
+
+**Can I use both Ambient mode and fixed schedules?**
+You can, but ambient mode will override the colour temperature set by a scheduled profile switch. For most people, pick one or the other.
+
+**What's Cinema mode for?**
+It's a dedicated profile for watching movies or relaxing — low brightness (30%), warm colour temperature (3500K), and it doesn't change the refresh rate. Think of it as "cosy screen" mode.
+
+**What's the Panic button?**
+Press Ctrl+Alt+P and it instantly switches to Work mode. Useful for... situations where you need to look productive quickly.
+
+**Is there really a Disco mode?**
+Yes. Press Ctrl+Alt+Shift+D for 5 seconds of rapidly cycling colour temperatures. It's an easter egg. Your display settings are restored automatically after it finishes.
+
+**Does the app phone home or collect data?**
+No. Everything runs locally. The only network call is the optional one-click location detection (via ip-api.com) for setting up sunrise/sunset — and that only happens when you click "Detect" in Settings. Usage stats are stored locally in config.json and never leave your machine.
+
+**Can I share my profile settings with someone?**
+Copy the `config.json` file from alongside the app. The other person can drop it next to their copy of Display Manager and it will load your profiles, schedules, and preferences.
+
+**What happens if the app crashes?**
+On next launch, Display Manager re-applies the last active profile, which resets the gamma ramp to the correct state. If the gamma ramp is stuck from a crash, just restart the app.
 
 ---
 
