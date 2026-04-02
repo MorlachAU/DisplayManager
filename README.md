@@ -51,6 +51,7 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 - **IP-based location detection** — One-click setup for sunrise/sunset feature
 - **First-run system check** — Verifies DDC/CI, detects conflicts (f.lux), shows available refresh rates
 - **Auto-start with Windows** — Toggle in settings, managed via registry
+- **Automatic update checker** — Checks GitHub for new releases on startup and notifies you if an update is available
 - **Multi-language support** — English, German, French, Spanish, and Japanese included. Easy to add more via JSON translation files.
 - **Proper Windows installer** — Inno Setup installer with Start Menu shortcuts, desktop icon, and auto-start option
 
@@ -251,6 +252,9 @@ Yes. Enable "Detect productivity apps" in Settings > Apps and it will recognise 
 
 **Does the app phone home or collect data?**
 No. Everything runs locally. The only network call is the optional one-click location detection (via ip-api.com) for setting up sunrise/sunset — and that only happens when you click "Detect" in Settings. Usage stats are stored locally in config.json and never leave your machine.
+
+**How do I know when there's an update?**
+Display Manager checks GitHub for new releases automatically each time it starts. If a newer version is available, you'll see a notification with a Download button that takes you to the releases page. No auto-downloading — you choose when to update.
 
 **What happens if the app crashes?**
 On next launch, Display Manager re-applies the last active profile, which resets the gamma ramp to the correct state. If the gamma ramp is stuck from a crash, just restart the app.
