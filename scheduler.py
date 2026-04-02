@@ -126,6 +126,8 @@ class ScheduleManager:
         """Gradually shift colour temperature based on time of day relative to sun position."""
         if not self.config.get("ambient_mode", False):
             return
+        if self.config.get("profile_lock", False):
+            return
         if not HAS_ASTRAL:
             return
 
