@@ -64,7 +64,7 @@ class SettingsWindow:
         """Build the settings window."""
         self._window = ctk.CTkToplevel(self._root)
         self._window.title("Display Manager — Settings")
-        self._window.geometry("550x640")
+        self._window.geometry("580x650")
         self._window.resizable(False, False)
         self._window.attributes("-topmost", True)
         self._window.after(200, lambda: self._window.attributes("-topmost", False))
@@ -83,6 +83,7 @@ class SettingsWindow:
         self._build_apps_tab(tabs.add("Apps"))
         self._build_general_tab(tabs.add("General"))
         self._build_stats_tab(tabs.add("Stats"))
+        self._build_about_tab(tabs.add("About"))
 
     # ── Profiles Tab ───────────────────────────────────────
 
@@ -722,17 +723,9 @@ class SettingsWindow:
         ctk.CTkButton(tab, text="Refresh Status", width=120,
                        command=self._refresh_status).pack(padx=10, pady=3, anchor="w")
 
-        # Version + support
-        vf = ctk.CTkFrame(tab, fg_color="transparent")
-        vf.pack(padx=15, pady=(3, 0), fill="x")
-        ctk.CTkLabel(vf, text="Display Manager v1.0 — MouseWheel Digital",
-                      text_color="gray").pack(side="left")
-        ctk.CTkButton(vf, text="Buy Me a Coffee", width=130, height=24,
-                       fg_color="#FFDD00", text_color="black",
-                       font=ctk.CTkFont(size=11),
-                       command=self._open_donate).pack(side="right")
-        ctk.CTkLabel(tab, text="mousewheeldigital.com", text_color="gray",
-                      font=ctk.CTkFont(size=11)).pack(padx=15, anchor="w")
+        # Version
+        ctk.CTkLabel(tab, text="v1.0 — see About tab for more",
+                      text_color="gray", font=ctk.CTkFont(size=11)).pack(padx=15, pady=(3, 0), anchor="w")
 
     def _open_donate(self):
         import webbrowser
@@ -844,3 +837,73 @@ class SettingsWindow:
 
             # Duration text
             ctk.CTkLabel(row, text=duration, text_color="gray", width=60).pack(side="left", padx=5)
+
+    # ── About Tab ──────────────────────────────────────────
+
+    def _build_about_tab(self, tab):
+        from pathlib import Path
+        from PIL import Image, ImageTk
+
+        # Logo
+        logo_path = Path(__file__).parent.parent / "assets" / "mousewheel_logo.png"
+        try:
+            if logo_path.exists():
+                logo = Image.open(str(logo_path)).convert("RGBA")
+                logo = logo.resize((80, 80), Image.LANCZOS)
+                self._about_logo_img = ImageTk.PhotoImage(logo)
+                ctk.CTkLabel(tab, image=self._about_logo_img, text="").pack(pady=(20, 5))
+        except Exception:
+            pass
+
+        # App name and version
+        ctk.CTkLabel(tab, text="Display Manager",
+                      font=ctk.CTkFont(size=22, weight="bold")).pack(pady=(5, 0))
+        ctk.CTkLabel(tab, text="Version 1.0",
+                      text_color="gray", font=ctk.CTkFont(size=13)).pack(pady=(0, 5))
+
+        # Branding
+        ctk.CTkLabel(tab, text="A MouseWheel Digital product",
+                      font=ctk.CTkFont(size=13)).pack(pady=(5, 0))
+        ctk.CTkLabel(tab, text="Digital products. Built with purpose.",
+                      text_color="gray", font=ctk.CTkFont(size=11, slant="italic")).pack(pady=(0, 10))
+
+        # Links frame
+        links = ctk.CTkFrame(tab, fg_color="transparent")
+        links.pack(pady=5)
+
+        ctk.CTkButton(links, text="mousewheeldigital.com", width=180,
+                       fg_color="transparent", border_width=1, border_color="gray",
+                       command=lambda: __import__("webbrowser").open(
+                           "https://www.mousewheeldigital.com/")).pack(pady=3)
+
+        ctk.CTkButton(links, text="Buy Me a Coffee", width=180,
+                       fg_color="#FFDD00", text_color="black",
+                       command=self._open_donate).pack(pady=3)
+
+        # Feedback
+        ctk.CTkLabel(tab, text="Feedback & Support", anchor="w",
+                      font=ctk.CTkFont(weight="bold")).pack(padx=15, pady=(15, 2), anchor="w")
+
+        feedback_frame = ctk.CTkFrame(tab, fg_color="transparent")
+        feedback_frame.pack(padx=15, anchor="w")
+        ctk.CTkLabel(feedback_frame, text="feedback@mousewheeldigital.com",
+                      font=ctk.CTkFont(size=12)).pack(side="left")
+        ctk.CTkButton(feedback_frame, text="Copy", width=50, height=24,
+                       fg_color="gray30",
+                       command=self._copy_feedback_email).pack(side="left", padx=8)
+
+        # GitHub
+        ctk.CTkButton(tab, text="GitHub: MorlachAU/DisplayManager", width=240,
+                       fg_color="transparent", border_width=1, border_color="gray",
+                       command=lambda: __import__("webbrowser").open(
+                           "https://github.com/MorlachAU/DisplayManager")).pack(pady=(10, 5))
+
+        # Credits
+        ctk.CTkLabel(tab, text="Built with the assistance of Claude Code by Anthropic",
+                      text_color="gray", font=ctk.CTkFont(size=10)).pack(pady=(10, 5))
+
+    def _copy_feedback_email(self):
+        """Copy feedback email to clipboard."""
+        if self._root:
+            self._root.clipboard_clear()
+            self._root.clipboard_append("feedback@mousewheeldigital.com")
