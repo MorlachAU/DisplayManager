@@ -318,10 +318,6 @@ class AppDetector:
             if not self.config.get("app_aware_enabled", False):
                 continue
 
-            # Don't override if profile is manually locked
-            if self.config.get("profile_lock", False):
-                continue
-
             exe_path = get_foreground_exe()
             if exe_path == self._previous_exe:
                 continue
@@ -336,7 +332,7 @@ class AppDetector:
                 if self.pm.get_active() != user_profile:
                     if self._pre_app_profile is None:
                         self._pre_app_profile = self.pm.get_active()
-                    self.pm.switch(user_profile)
+                    self._app_switch(user_profile)
                 continue
 
             # Check game detection
@@ -345,12 +341,39 @@ class AppDetector:
                 if self.pm.get_active() != game_profile:
                     if self._pre_app_profile is None:
                         self._pre_app_profile = self.pm.get_active()
-                    self.pm.switch(game_profile)
+                    self._app_switch(game_profile)
                 continue
 
             # No match — revert to previous profile if we auto-switched
             if self._pre_app_profile is not None:
-                current = self.pm.get_active()
-                if current != self._pre_app_profile:
-                    self.pm.switch(self._pre_app_profile)
+                revert_to = self._pre_app_profile
                 self._pre_app_profile = None
+                self._app_switch(revert_to)
+
+    def _app_switch(self, profile_name):
+        """Switch profile for app detection — bypasses lock without setting lock."""
+        profile = self.pm.config.get_profile(profile_name)
+        if profile is None:
+            return
+        import display
+        brightness = profile.get("brightness", 70)
+        colour_temp = profile.get("colour_temp", 6500)
+        refresh_rate = profile.get("refresh_rate", 0)
+        transition_ms = self.pm.config.get("transition_ms", 0)
+
+        if display.is_dimmed():
+            display.toggle_quick_dim()
+
+        display.apply_profile(brightness, colour_temp, transition_ms)
+
+        if refresh_rate > 0:
+            current_rate = display.get_refresh_rate()
+            if current_rate != refresh_rate:
+                display.set_refresh_rate(refresh_rate)
+
+        self.pm.config.set_active_profile(profile_name)
+        if self.pm.on_switch:
+            try:
+                self.pm.on_switch(profile_name)
+            except Exception:
+                pass
