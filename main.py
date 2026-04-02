@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import display
+import i18n
 from config import Config
 from profiles import ProfileManager
 from tray import TrayApp
@@ -40,6 +41,9 @@ def _run_watchdog(pm, stop_event):
 def main():
     # 1. Load config
     config = Config()
+
+    # 2. Load language
+    i18n.load_language(config.get("language", "en"))
 
     # 2. Create profile manager
     pm = ProfileManager(config)

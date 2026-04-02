@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "language": "Deutsch",
+    "code": "de",
+    "author": "Machine translated — contributions welcome"
+  },
+  "app": {
+    "name": "Display Manager",
+    "by": "von MouseWheel Digital"
+  },
+  "tray": {
+    "ambient": "Umgebung",
+    "panic": "PANIK! (Arbeitsmodus)",
+    "lock_profile": "Profil sperren",
+    "unlock_profile": "Profil entsperren",
+    "disco": "Disco-Modus",
+    "settings": "Einstellungen",
+    "quit": "Beenden"
+  },
+  "settings": {
+    "title": "Display Manager \u2014 Einstellungen",
+    "tabs": {
+      "profiles": "Profile",
+      "schedule": "Zeitplan",
+      "apps": "Apps",
+      "general": "Allgemein",
+      "stats": "Statistiken"
+    }
+  },
+  "profiles": {
+    "brightness": "Helligkeit",
+    "colour_temp": "Farbtemperatur",
+    "refresh_rate": "Bildwiederholrate",
+    "no_change": "Keine Anderung",
+    "hotkey": "Tastenkombination",
+    "record": "Aufnehmen",
+    "press_keys": "Tasten drucken...",
+    "apply_now": "Jetzt anwenden",
+    "save": "Speichern",
+    "revert": "Auf Standard zurucksetzen",
+    "restore_all": "Alle Standards wiederherstellen",
+    "preview": "Vorschau: {brightness}% Helligkeit, {kelvin}K",
+    "saved": "Profil '{name}' gespeichert",
+    "reverted": "'{name}' auf Standard zuruckgesetzt",
+    "restored": "Alle Standardprofile wiederhergestellt",
+    "cannot_delete_last": "Letztes Profil kann nicht geloscht werden",
+    "deleted": "Profil '{name}' geloscht",
+    "created": "Profil '{name}' erstellt",
+    "already_exists": "Profil '{name}' existiert bereits",
+    "new_profile_prompt": "Profilname eingeben:"
+  },
+  "schedule": {
+    "sunrise_sunset": "Sonnenaufgang / Sonnenuntergang",
+    "auto_switch_sun": "Automatisch bei Sonnenauf- und -untergang wechseln",
+    "sunrise": "Sonnenaufgang:",
+    "sunset": "Sonnenuntergang:",
+    "detect": "Erkennen",
+    "detecting": "Standort wird erkannt...",
+    "detected": "Erkannt: {location}",
+    "detect_failed": "Standorterkennung fehlgeschlagen \u2014 manuell eingeben",
+    "save_sun": "Sonnenplan speichern",
+    "sun_saved": "Sonnenplan gespeichert",
+    "fixed_rules": "Feste Zeitregeln",
+    "enable_fixed": "Feste Zeitregeln aktivieren",
+    "add_rule": "+ Regel hinzufugen",
+    "save_rules": "Regeln speichern",
+    "saved_rules": "{count} Regel(n) gespeichert",
+    "invalid_latlon": "Ungultige Breiten-/Langenwerte"
+  },
+  "apps": {
+    "enable_app_aware": "App-bewusste Profilumschaltung aktivieren",
+    "app_aware_desc": "Erkennt automatisch Spiele und wechselt Profile.\nSpiele werden uber Windows, Steam, Epic, Vollbild und DirectX erkannt.",
+    "game_detect": "Bei Spielerkennung wechseln zu:",
+    "productivity_detect": "Produktivitats-Apps erkennen (Office, Browser, Teams, etc.)",
+    "productivity_switch": "Bei Produktivitats-App wechseln zu:",
+    "custom_rules": "Benutzerdefinierte App-Regeln",
+    "custom_rules_desc": "Apps bestimmten Profilen zuordnen (z.B. vlc.exe zu Kino)",
+    "add_rule": "+ Regel hinzufugen",
+    "save_rules": "Regeln speichern",
+    "saved_rules": "{count} Regel(n) gespeichert",
+    "show_games": "Erkannte Spiele anzeigen",
+    "games_count": "Spieldatenbank: {count} Spiel(e) erkannt",
+    "games_loading": "Spieldatenbank wird geladen..."
+  },
+  "general": {
+    "start_windows": "Mit Windows starten",
+    "notifications": "Benachrichtigungen bei Profilwechsel anzeigen",
+    "ambient": "Umgebungsmodus (allmahliche Farbverschiebung mit Sonne)",
+    "transition": "Ubergangsgeschwindigkeit",
+    "instant": "Sofort",
+    "hotkeys": "Tastenkombinationen",
+    "hotkey_info": "Schnell dimmen: Ctrl+Alt+D    Sperren: Ctrl+Alt+L\nPanik (Arbeit): Ctrl+Alt+P    Disco: Ctrl+Alt+Shift+D\nProfile: Ctrl+Alt+1/2/3/4",
+    "status": "Aktueller Status",
+    "refresh_status": "Status aktualisieren",
+    "profile": "Profil: {name}",
+    "locked": "GESPERRT",
+    "dimmed": "GEDIMMT",
+    "ambient_label": "UMGEBUNG",
+    "monitors": "{count} Monitor(e)",
+    "language": "Sprache",
+    "donate": "Kaffee spendieren",
+    "version": "Display Manager v1.0 \u2014 MouseWheel Digital"
+  },
+  "stats": {
+    "title": "Nutzungsstatistiken",
+    "today": "Heute",
+    "this_week": "Diese Woche",
+    "refresh": "Statistiken aktualisieren",
+    "no_data": "Noch keine Daten"
+  },
+  "first_run": {
+    "welcome": "Willkommen bei Display Manager",
+    "checking": "Systemprufungen werden ausgefuhrt...",
+    "tip": "Tipp: Rechtsklick auf das Tray-Symbol zum Profilwechsel\noder Ctrl+Alt+1/2/3 fur schnelles Umschalten.",
+    "got_it": "Verstanden!",
+    "notification_switch": "Gewechselt zu {name}"
+  }
+}

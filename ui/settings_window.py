@@ -657,6 +657,30 @@ class SettingsWindow:
             command=lambda: self.config.set("ambient_mode", self._ambient_var.get())
         ).pack(padx=15, pady=3, anchor="w")
 
+        # Language
+        lf = ctk.CTkFrame(tab, fg_color="transparent")
+        lf.pack(padx=10, pady=(5, 3), fill="x")
+        ctk.CTkLabel(lf, text="Language:").pack(side="left", padx=5)
+        from i18n import get_available_languages, load_language, get_current_language
+        langs = get_available_languages()
+        lang_names = [name for code, name in langs]
+        lang_codes = [code for code, name in langs]
+        current_code = self.config.get("language", "en")
+        current_name = next((name for code, name in langs if code == current_code), "English")
+        self._lang_var = ctk.StringVar(value=current_name)
+
+        def on_lang_change(name):
+            idx = lang_names.index(name) if name in lang_names else 0
+            code = lang_codes[idx]
+            self.config.set("language", code)
+            load_language(code)
+            self._lang_status.configure(text=f"Language set to {name} — restart app to apply fully")
+
+        ctk.CTkOptionMenu(lf, values=lang_names, variable=self._lang_var,
+                           width=140, command=on_lang_change).pack(side="left", padx=5)
+        self._lang_status = ctk.CTkLabel(lf, text="", text_color="gray", font=ctk.CTkFont(size=11))
+        self._lang_status.pack(side="left", padx=5)
+
         # Transition speed
         ctk.CTkLabel(tab, text="Transition Speed", anchor="w").pack(padx=15, pady=(8, 0), anchor="w")
         tf = ctk.CTkFrame(tab, fg_color="transparent")

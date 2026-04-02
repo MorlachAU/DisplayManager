@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "language": "Espanol",
+    "code": "es",
+    "author": "Machine translated — contributions welcome"
+  },
+  "app": {
+    "name": "Display Manager",
+    "by": "por MouseWheel Digital"
+  },
+  "tray": {
+    "ambient": "Ambiente",
+    "panic": "PANICO! (Modo trabajo)",
+    "lock_profile": "Bloquear perfil",
+    "unlock_profile": "Desbloquear perfil",
+    "disco": "Modo Disco",
+    "settings": "Configuracion",
+    "quit": "Salir"
+  },
+  "settings": {
+    "title": "Display Manager \u2014 Configuracion",
+    "tabs": {
+      "profiles": "Perfiles",
+      "schedule": "Horario",
+      "apps": "Apps",
+      "general": "General",
+      "stats": "Estadisticas"
+    }
+  },
+  "profiles": {
+    "brightness": "Brillo",
+    "colour_temp": "Temperatura de color",
+    "refresh_rate": "Frecuencia de actualizacion",
+    "no_change": "Sin cambios",
+    "hotkey": "Atajo de teclado",
+    "record": "Grabar",
+    "press_keys": "Presione teclas...",
+    "apply_now": "Aplicar ahora",
+    "save": "Guardar",
+    "revert": "Restaurar predeterminado",
+    "restore_all": "Restaurar todos los predeterminados",
+    "preview": "Vista previa: {brightness}% brillo, {kelvin}K",
+    "saved": "Perfil '{name}' guardado",
+    "reverted": "'{name}' restaurado a predeterminado",
+    "restored": "Todos los perfiles predeterminados restaurados",
+    "cannot_delete_last": "No se puede eliminar el ultimo perfil",
+    "deleted": "Perfil '{name}' eliminado",
+    "created": "Perfil '{name}' creado",
+    "already_exists": "El perfil '{name}' ya existe",
+    "new_profile_prompt": "Ingrese nombre del perfil:"
+  },
+  "schedule": {
+    "sunrise_sunset": "Amanecer / Atardecer",
+    "auto_switch_sun": "Cambiar automaticamente al amanecer y atardecer",
+    "sunrise": "Amanecer:",
+    "sunset": "Atardecer:",
+    "detect": "Detectar",
+    "detecting": "Detectando ubicacion...",
+    "detected": "Detectado: {location}",
+    "detect_failed": "Deteccion de ubicacion fallida \u2014 ingrese manualmente",
+    "save_sun": "Guardar horario solar",
+    "sun_saved": "Horario solar guardado",
+    "fixed_rules": "Reglas de hora fija",
+    "enable_fixed": "Habilitar reglas de hora fija",
+    "add_rule": "+ Agregar regla",
+    "save_rules": "Guardar reglas",
+    "saved_rules": "{count} regla(s) guardada(s)",
+    "invalid_latlon": "Valores de latitud/longitud invalidos"
+  },
+  "apps": {
+    "enable_app_aware": "Habilitar cambio de perfil inteligente",
+    "app_aware_desc": "Detecta automaticamente juegos y cambia perfiles.\nJuegos detectados via Windows, Steam, Epic, pantalla completa y DirectX.",
+    "game_detect": "Al detectar un juego, cambiar a:",
+    "productivity_detect": "Detectar apps de productividad (Office, navegadores, Teams, etc.)",
+    "productivity_switch": "Al detectar app de productividad, cambiar a:",
+    "custom_rules": "Reglas personalizadas",
+    "custom_rules_desc": "Asignar apps especificas a perfiles (ej., vlc.exe a Cine)",
+    "add_rule": "+ Agregar regla",
+    "save_rules": "Guardar reglas",
+    "saved_rules": "{count} regla(s) guardada(s)",
+    "show_games": "Mostrar juegos detectados",
+    "games_count": "Base de datos: {count} juego(s) detectado(s)",
+    "games_loading": "Cargando base de datos de juegos..."
+  },
+  "general": {
+    "start_windows": "Iniciar con Windows",
+    "notifications": "Mostrar notificaciones al cambiar perfil",
+    "ambient": "Modo ambiente (cambio gradual de color con el sol)",
+    "transition": "Velocidad de transicion",
+    "instant": "Instantaneo",
+    "hotkeys": "Atajos de teclado",
+    "hotkey_info": "Atenuar: Ctrl+Alt+D    Bloquear: Ctrl+Alt+L\nPanico (Trabajo): Ctrl+Alt+P    Disco: Ctrl+Alt+Shift+D\nPerfiles: Ctrl+Alt+1/2/3/4",
+    "status": "Estado actual",
+    "refresh_status": "Actualizar estado",
+    "profile": "Perfil: {name}",
+    "locked": "BLOQUEADO",
+    "dimmed": "ATENUADO",
+    "ambient_label": "AMBIENTE",
+    "monitors": "{count} monitor(es)",
+    "language": "Idioma",
+    "donate": "Invitame un cafe",
+    "version": "Display Manager v1.0 \u2014 MouseWheel Digital"
+  },
+  "stats": {
+    "title": "Estadisticas de uso",
+    "today": "Hoy",
+    "this_week": "Esta semana",
+    "refresh": "Actualizar estadisticas",
+    "no_data": "Sin datos aun"
+  },
+  "first_run": {
+    "welcome": "Bienvenido a Display Manager",
+    "checking": "Ejecutando verificaciones del sistema...",
+    "tip": "Consejo: Clic derecho en el icono de la bandeja para cambiar perfiles\no presione Ctrl+Alt+1/2/3 para cambio rapido.",
+    "got_it": "Entendido!",
+    "notification_switch": "Cambiado a {name}"
+  }
+}

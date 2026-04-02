@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "language": "English",
+    "code": "en",
+    "author": "MouseWheel Digital"
+  },
+  "app": {
+    "name": "Display Manager",
+    "by": "by MouseWheel Digital"
+  },
+  "tray": {
+    "ambient": "Ambient",
+    "panic": "PANIC! (Work mode)",
+    "lock_profile": "Lock Profile",
+    "unlock_profile": "Unlock Profile",
+    "disco": "Disco Mode",
+    "settings": "Settings",
+    "quit": "Quit"
+  },
+  "settings": {
+    "title": "Display Manager \u2014 Settings",
+    "tabs": {
+      "profiles": "Profiles",
+      "schedule": "Schedule",
+      "apps": "Apps",
+      "general": "General",
+      "stats": "Stats"
+    }
+  },
+  "profiles": {
+    "brightness": "Brightness",
+    "colour_temp": "Colour Temperature",
+    "refresh_rate": "Refresh Rate",
+    "no_change": "No change",
+    "hotkey": "Hotkey",
+    "record": "Record",
+    "press_keys": "Press keys...",
+    "apply_now": "Apply Now",
+    "save": "Save",
+    "revert": "Revert to Default",
+    "restore_all": "Restore All Defaults",
+    "preview": "Preview: {brightness}% brightness, {kelvin}K",
+    "saved": "Saved {name} profile",
+    "reverted": "Reverted {name} to defaults",
+    "restored": "Restored all default profiles",
+    "cannot_delete_last": "Cannot delete the last profile",
+    "deleted": "Deleted profile '{name}'",
+    "created": "Created profile '{name}'",
+    "already_exists": "Profile '{name}' already exists",
+    "new_profile_prompt": "Enter profile name:"
+  },
+  "schedule": {
+    "sunrise_sunset": "Sunrise / Sunset",
+    "auto_switch_sun": "Auto-switch at sunrise and sunset",
+    "sunrise": "Sunrise:",
+    "sunset": "Sunset:",
+    "detect": "Detect",
+    "detecting": "Detecting location...",
+    "detected": "Detected: {location}",
+    "detect_failed": "Location detection failed \u2014 enter manually",
+    "save_sun": "Save Sun Schedule",
+    "sun_saved": "Sun schedule saved",
+    "fixed_rules": "Fixed Time Rules",
+    "enable_fixed": "Enable fixed time rules",
+    "add_rule": "+ Add Rule",
+    "save_rules": "Save Rules",
+    "saved_rules": "Saved {count} rule(s)",
+    "invalid_latlon": "Invalid lat/lon values"
+  },
+  "apps": {
+    "enable_app_aware": "Enable app-aware profile switching",
+    "app_aware_desc": "Automatically detects games and switches profiles.\nGames are detected via Windows, Steam, Epic, fullscreen, and DirectX.",
+    "game_detect": "When a game is detected, switch to:",
+    "productivity_detect": "Detect productivity apps (Office, browsers, Teams, etc.)",
+    "productivity_switch": "When a productivity app is detected, switch to:",
+    "custom_rules": "Custom App Rules",
+    "custom_rules_desc": "Map specific apps to profiles (e.g., vlc.exe to Cinema)",
+    "add_rule": "+ Add Rule",
+    "save_rules": "Save Rules",
+    "saved_rules": "Saved {count} rule(s)",
+    "show_games": "Show Detected Games Count",
+    "games_count": "Known games database: {count} game(s) detected",
+    "games_loading": "Game database still loading..."
+  },
+  "general": {
+    "start_windows": "Start with Windows",
+    "notifications": "Show notifications on profile switch",
+    "ambient": "Ambient mode (gradual colour shift with sun)",
+    "transition": "Transition Speed",
+    "instant": "Instant",
+    "hotkeys": "Hotkeys",
+    "hotkey_info": "Quick Dim: Ctrl+Alt+D    Lock: Ctrl+Alt+L\nPanic (Work): Ctrl+Alt+P    Disco: Ctrl+Alt+Shift+D\nProfiles: Ctrl+Alt+1/2/3/4",
+    "status": "Current Status",
+    "refresh_status": "Refresh Status",
+    "profile": "Profile: {name}",
+    "locked": "LOCKED",
+    "dimmed": "DIMMED",
+    "ambient_label": "AMBIENT",
+    "monitors": "{count} monitor(s)",
+    "language": "Language",
+    "donate": "Buy Me a Coffee",
+    "version": "Display Manager v1.0 \u2014 MouseWheel Digital"
+  },
+  "stats": {
+    "title": "Usage Stats",
+    "today": "Today",
+    "this_week": "This Week",
+    "refresh": "Refresh Stats",
+    "no_data": "No data yet"
+  },
+  "first_run": {
+    "welcome": "Welcome to Display Manager",
+    "checking": "Running system checks...",
+    "ddc_ok": "Brightness control working ({count} display(s)). Current: {brightness}%",
+    "ddc_fail": "No displays found. Check DDC/CI is enabled in your monitor OSD settings.",
+    "refresh_rates": "Available: {rates} Hz",
+    "refresh_fail": "Could not enumerate",
+    "flux_running": "Running \u2014 please close f.lux to avoid conflicts.\nDisplay Manager replaces f.lux for colour temperature.",
+    "flux_ok": "Not running (good)",
+    "location_not_set": "Not set \u2014 go to Settings > Schedule > Detect\nto enable sunrise/sunset auto-switching",
+    "location_set": "Set to {lat}, {lon}",
+    "tip": "Tip: Right-click the tray icon to switch profiles\nor press Ctrl+Alt+1/2/3 for quick switching.",
+    "got_it": "Got it!",
+    "notification_switch": "Switched to {name}"
+  }
+}

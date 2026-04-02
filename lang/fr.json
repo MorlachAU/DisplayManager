@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "language": "Francais",
+    "code": "fr",
+    "author": "Machine translated — contributions welcome"
+  },
+  "app": {
+    "name": "Display Manager",
+    "by": "par MouseWheel Digital"
+  },
+  "tray": {
+    "ambient": "Ambiance",
+    "panic": "PANIQUE ! (Mode travail)",
+    "lock_profile": "Verrouiller le profil",
+    "unlock_profile": "Deverrouiller le profil",
+    "disco": "Mode Disco",
+    "settings": "Parametres",
+    "quit": "Quitter"
+  },
+  "settings": {
+    "title": "Display Manager \u2014 Parametres",
+    "tabs": {
+      "profiles": "Profils",
+      "schedule": "Horaire",
+      "apps": "Apps",
+      "general": "General",
+      "stats": "Statistiques"
+    }
+  },
+  "profiles": {
+    "brightness": "Luminosite",
+    "colour_temp": "Temperature de couleur",
+    "refresh_rate": "Taux de rafraichissement",
+    "no_change": "Pas de changement",
+    "hotkey": "Raccourci clavier",
+    "record": "Enregistrer",
+    "press_keys": "Appuyez sur les touches...",
+    "apply_now": "Appliquer maintenant",
+    "save": "Sauvegarder",
+    "revert": "Retablir par defaut",
+    "restore_all": "Restaurer tous les defauts",
+    "preview": "Apercu : {brightness}% luminosite, {kelvin}K",
+    "saved": "Profil '{name}' sauvegarde",
+    "reverted": "'{name}' retabli par defaut",
+    "restored": "Tous les profils par defaut restaures",
+    "cannot_delete_last": "Impossible de supprimer le dernier profil",
+    "deleted": "Profil '{name}' supprime",
+    "created": "Profil '{name}' cree",
+    "already_exists": "Le profil '{name}' existe deja",
+    "new_profile_prompt": "Entrez le nom du profil :"
+  },
+  "schedule": {
+    "sunrise_sunset": "Lever / Coucher du soleil",
+    "auto_switch_sun": "Changer automatiquement au lever et coucher du soleil",
+    "sunrise": "Lever :",
+    "sunset": "Coucher :",
+    "detect": "Detecter",
+    "detecting": "Detection de la localisation...",
+    "detected": "Detecte : {location}",
+    "detect_failed": "Detection echouee \u2014 entrez manuellement",
+    "save_sun": "Sauvegarder horaire solaire",
+    "sun_saved": "Horaire solaire sauvegarde",
+    "fixed_rules": "Regles horaires fixes",
+    "enable_fixed": "Activer les regles horaires fixes",
+    "add_rule": "+ Ajouter une regle",
+    "save_rules": "Sauvegarder les regles",
+    "saved_rules": "{count} regle(s) sauvegardee(s)",
+    "invalid_latlon": "Valeurs de latitude/longitude invalides"
+  },
+  "apps": {
+    "enable_app_aware": "Activer le changement de profil intelligent",
+    "app_aware_desc": "Detecte automatiquement les jeux et change de profil.\nJeux detectes via Windows, Steam, Epic, plein ecran et DirectX.",
+    "game_detect": "Quand un jeu est detecte, basculer vers :",
+    "productivity_detect": "Detecter les apps de productivite (Office, navigateurs, Teams, etc.)",
+    "productivity_switch": "Quand une app de productivite est detectee, basculer vers :",
+    "custom_rules": "Regles personnalisees",
+    "custom_rules_desc": "Associer des apps a des profils (ex. vlc.exe vers Cinema)",
+    "add_rule": "+ Ajouter une regle",
+    "save_rules": "Sauvegarder les regles",
+    "saved_rules": "{count} regle(s) sauvegardee(s)",
+    "show_games": "Afficher les jeux detectes",
+    "games_count": "Base de donnees : {count} jeu(x) detecte(s)",
+    "games_loading": "Chargement de la base de donnees..."
+  },
+  "general": {
+    "start_windows": "Demarrer avec Windows",
+    "notifications": "Afficher les notifications lors du changement de profil",
+    "ambient": "Mode ambiance (changement graduel avec le soleil)",
+    "transition": "Vitesse de transition",
+    "instant": "Instantane",
+    "hotkeys": "Raccourcis clavier",
+    "hotkey_info": "Attenuer : Ctrl+Alt+D    Verrouiller : Ctrl+Alt+L\nPanique (Travail) : Ctrl+Alt+P    Disco : Ctrl+Alt+Shift+D\nProfils : Ctrl+Alt+1/2/3/4",
+    "status": "Statut actuel",
+    "refresh_status": "Actualiser le statut",
+    "profile": "Profil : {name}",
+    "locked": "VERROUILLE",
+    "dimmed": "ATTENUE",
+    "ambient_label": "AMBIANCE",
+    "monitors": "{count} moniteur(s)",
+    "language": "Langue",
+    "donate": "Offrir un cafe",
+    "version": "Display Manager v1.0 \u2014 MouseWheel Digital"
+  },
+  "stats": {
+    "title": "Statistiques d'utilisation",
+    "today": "Aujourd'hui",
+    "this_week": "Cette semaine",
+    "refresh": "Actualiser les statistiques",
+    "no_data": "Pas encore de donnees"
+  },
+  "first_run": {
+    "welcome": "Bienvenue dans Display Manager",
+    "checking": "Verification du systeme en cours...",
+    "tip": "Astuce : Clic droit sur l'icone pour changer de profil\nou appuyez sur Ctrl+Alt+1/2/3 pour un changement rapide.",
+    "got_it": "Compris !",
+    "notification_switch": "Bascule vers {name}"
+  }
+}

@@ -51,6 +51,8 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 - **IP-based location detection** — One-click setup for sunrise/sunset feature
 - **First-run system check** — Verifies DDC/CI, detects conflicts (f.lux), shows available refresh rates
 - **Auto-start with Windows** — Toggle in settings, managed via registry
+- **Multi-language support** — English, German, French, Spanish, and Japanese included. Easy to add more via JSON translation files.
+- **Proper Windows installer** — Inno Setup installer with Start Menu shortcuts, desktop icon, and auto-start option
 
 ---
 
@@ -67,12 +69,18 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 
 **No additional software required.** Display Manager is fully self-contained — it controls your display directly through Windows APIs. No need to install f.lux, ClickMonitorDDC, Monitorian, or any other display utility.
 
-### Option A: Download the release (no Python needed)
+### Option A: Windows Installer (recommended)
 
-1. Download the latest release from [Releases](../../releases)
-2. Extract the zip to a folder of your choice
-3. Run `DisplayManager.exe`
+1. Download `DisplayManager_Setup_1.0.exe` from [Releases](../../releases)
+2. Run the installer — choose install location, desktop icon, and auto-start options
+3. Launch from Start Menu or desktop shortcut
 4. The first-run dialog will check your system and guide you through setup
+
+### Option B: Portable (no install needed)
+
+1. Download the portable zip from [Releases](../../releases)
+2. Extract to a folder of your choice
+3. Run `DisplayManager.exe`
 
 ### Option B: Run from source
 
@@ -252,10 +260,29 @@ To create a standalone executable:
 
 ```
 pip install pyinstaller
-pyinstaller --noconfirm --windowed --name "DisplayManager" --icon "assets/icon.ico" --add-data "assets;assets" --collect-all customtkinter --hidden-import pystray._win32 main.py
+pyinstaller --noconfirm --windowed --name "DisplayManager" --icon "assets/icon.ico" --add-data "assets;assets" --add-data "lang;lang" --collect-all customtkinter --hidden-import pystray._win32 main.py
 ```
 
-The output will be in `dist/DisplayManager/`. Zip the entire folder to distribute.
+The output will be in `dist/DisplayManager/`. Zip the entire folder for the portable distribution.
+
+To build the Windows installer, install [Inno Setup 6](https://jrsoftware.org/isinfo.php) then compile `installer.iss`:
+
+```
+"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+```
+
+The installer will be created in `installer_output/`.
+
+## Contributing Translations
+
+Translation files are simple JSON files in the `lang/` folder. To add a new language:
+
+1. Copy `lang/en.json` to `lang/xx.json` (where `xx` is the language code)
+2. Translate all string values (leave keys and placeholders like `{name}` unchanged)
+3. Update the `_meta` section with the language name and your name as author
+4. Submit a pull request
+
+Current languages: English, German (Deutsch), French (Francais), Spanish (Espanol), Japanese.
 
 ---
 

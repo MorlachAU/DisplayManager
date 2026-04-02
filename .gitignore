@@ -26,3 +26,6 @@ Desktop.ini
 
 # Test files
 test_display.py
+
+# Installer output
+installer_output/
