@@ -200,8 +200,8 @@ Settings are stored in `config.json` alongside the executable (or `main.py` if r
 
 ## FAQ
 
-**Do I still need f.lux?**
-No. Display Manager controls colour temperature directly using the same technique f.lux uses (gamma ramp adjustment). You should close or uninstall f.lux — running both at the same time will cause them to fight over the gamma ramp and your display will flicker.
+**Do I need any other software to use Display Manager?**
+No. Display Manager is completely self-contained and controls your display directly through Windows APIs. You do not need f.lux, Monitorian, Twinkle Tray, ClickMonitorDDC, or any other display utility. If you have f.lux installed, you should close or uninstall it — both apps control the same gamma ramp and will conflict with each other.
 
 **Does it work on laptops?**
 Yes. Brightness control works on laptop screens via WMI and on external monitors via DDC/CI. Colour temperature and refresh rate work on all displays.
@@ -210,7 +210,7 @@ Yes. Brightness control works on laptop screens via WMI and on external monitors
 Display Manager detects all connected displays automatically. Brightness changes are applied to all monitors. Restart the app after connecting a new display for it to be detected.
 
 **Why does my screen go black briefly when switching to Game mode?**
-If your profiles use different refresh rates (e.g., 60Hz for Work, 100Hz for Game), Windows performs a full display mode change which momentarily blanks the screen. This is normal. Switching between profiles with the same refresh rate is instant.
+This is standard Windows behaviour, not a Display Manager issue. When your profiles use different refresh rates (e.g., 60Hz for Work, 100Hz for Game), Windows performs a full display mode change which momentarily blanks the screen. This happens with any application that changes the refresh rate. Switching between profiles with the same refresh rate is instant with no flash.
 
 **What does the red dot on the tray icon mean?**
 Your profile is locked. This happens automatically when you manually select a profile (to prevent scheduled switches from overriding your choice). Right-click the tray icon and click "Unlock Profile" or press Ctrl+Alt+L to return to automatic mode.
@@ -238,9 +238,6 @@ Yes. Go to Settings > Apps and add custom rules. For example, map `vlc.exe` to C
 
 **Does the app phone home or collect data?**
 No. Everything runs locally. The only network call is the optional one-click location detection (via ip-api.com) for setting up sunrise/sunset — and that only happens when you click "Detect" in Settings. Usage stats are stored locally in config.json and never leave your machine.
-
-**Can I share my profile settings with someone?**
-Copy the `config.json` file from alongside the app. The other person can drop it next to their copy of Display Manager and it will load your profiles, schedules, and preferences.
 
 **What happens if the app crashes?**
 On next launch, Display Manager re-applies the last active profile, which resets the gamma ramp to the correct state. If the gamma ramp is stuck from a crash, just restart the app.
