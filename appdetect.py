@@ -254,6 +254,8 @@ class AppDetector:
         self._thread = None
         self._previous_exe = None
         self._pre_app_profile = None  # profile before app-aware switched
+        self._active_app_exe = None   # exe path of the app we switched for
+        self._active_app_pid = None   # PID to monitor for exit
 
     def start(self):
         """Start the detection thread."""
@@ -318,13 +320,29 @@ class AppDetector:
             if not self.config.get("app_aware_enabled", False):
                 continue
 
+            # If we already switched for an app, check if it's still running
+            if self._active_app_pid is not None:
+                if psutil.pid_exists(self._active_app_pid):
+                    # App still running — stay on current profile even if alt-tabbed
+                    continue
+                else:
+                    # App closed — revert to previous profile
+                    self._active_app_exe = None
+                    self._active_app_pid = None
+                    if self._pre_app_profile is not None:
+                        revert_to = self._pre_app_profile
+                        self._pre_app_profile = None
+                        self._app_switch(revert_to)
+                    continue
+
+            # No active tracked app — check foreground for new matches
             exe_path = get_foreground_exe()
-            if exe_path == self._previous_exe:
+            if not exe_path or exe_path == self._previous_exe:
                 continue
             self._previous_exe = exe_path
 
-            if not exe_path:
-                continue
+            # Get PID of foreground
+            fg_pid = self._get_foreground_pid()
 
             # Check user rules first (highest priority)
             user_profile = self._check_user_rules(exe_path)
@@ -332,6 +350,8 @@ class AppDetector:
                 if self.pm.get_active() != user_profile:
                     if self._pre_app_profile is None:
                         self._pre_app_profile = self.pm.get_active()
+                    self._active_app_exe = exe_path
+                    self._active_app_pid = fg_pid
                     self._app_switch(user_profile)
                 continue
 
@@ -341,14 +361,19 @@ class AppDetector:
                 if self.pm.get_active() != game_profile:
                     if self._pre_app_profile is None:
                         self._pre_app_profile = self.pm.get_active()
+                    self._active_app_exe = exe_path
+                    self._active_app_pid = fg_pid
                     self._app_switch(game_profile)
                 continue
 
-            # No match — revert to previous profile if we auto-switched
-            if self._pre_app_profile is not None:
-                revert_to = self._pre_app_profile
-                self._pre_app_profile = None
-                self._app_switch(revert_to)
+    def _get_foreground_pid(self):
+        """Get PID of the foreground window process."""
+        hwnd = _user32.GetForegroundWindow()
+        if not hwnd:
+            return None
+        pid = ctypes.wintypes.DWORD()
+        _user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+        return pid.value if pid.value else None
 
     def _app_switch(self, profile_name):
         """Switch profile for app detection — bypasses lock without setting lock."""
