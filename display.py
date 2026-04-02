@@ -72,12 +72,48 @@ def _build_gamma_ramp(red_mult, green_mult, blue_mult):
     return ramp
 
 
+class DISPLAY_DEVICE(ctypes.Structure):
+    _fields_ = [
+        ("cb", ctypes.wintypes.DWORD),
+        ("DeviceName", ctypes.c_wchar * 32),
+        ("DeviceString", ctypes.c_wchar * 128),
+        ("StateFlags", ctypes.wintypes.DWORD),
+        ("DeviceID", ctypes.c_wchar * 128),
+        ("DeviceKey", ctypes.c_wchar * 128),
+    ]
+
+
+def _get_active_displays():
+    """Enumerate all active display device names."""
+    displays = []
+    dd = DISPLAY_DEVICE()
+    dd.cb = ctypes.sizeof(DISPLAY_DEVICE)
+    i = 0
+    while _user32.EnumDisplayDevicesW(None, i, ctypes.byref(dd), 0):
+        if dd.StateFlags & 1:  # DISPLAY_DEVICE_ATTACHED_TO_DESKTOP
+            displays.append(dd.DeviceName)
+        i += 1
+    return displays
+
+
 def _set_gamma_ramp(ramp):
-    """Apply a gamma ramp to the primary display."""
-    hdc = _user32.GetDC(0)
-    result = _gdi32.SetDeviceGammaRamp(hdc, ctypes.byref(ramp))
-    _user32.ReleaseDC(0, hdc)
-    return bool(result)
+    """Apply a gamma ramp to ALL active displays."""
+    displays = _get_active_displays()
+    if not displays:
+        # Fallback: primary display
+        hdc = _user32.GetDC(0)
+        result = _gdi32.SetDeviceGammaRamp(hdc, ctypes.byref(ramp))
+        _user32.ReleaseDC(0, hdc)
+        return bool(result)
+
+    success = False
+    for device_name in displays:
+        hdc = _gdi32.CreateDCW(device_name, None, None, None)
+        if hdc:
+            if _gdi32.SetDeviceGammaRamp(hdc, ctypes.byref(ramp)):
+                success = True
+            _gdi32.DeleteDC(hdc)
+    return success
 
 
 def set_colour_temperature(kelvin):
