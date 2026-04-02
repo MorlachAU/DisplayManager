@@ -118,13 +118,27 @@ Right-click the tray icon and click **Settings** to open the configuration windo
 - **General tab** — Auto-start, notifications, ambient mode, transition speed, hotkey reference, and current status.
 - **Stats tab** — Visual bar charts showing time spent in each profile today and this week.
 
-### Profile Lock
+### Profile Lock (Auto-Lock)
 
-When gaming, you don't want a scheduled switch interrupting you. Press **Ctrl+Alt+L** or right-click the tray icon and click "Lock Profile". While locked:
-- Scheduled and sunrise/sunset switches are blocked
+When you manually select a profile (tray menu or hotkey), it **automatically locks** to prevent scheduled or ambient switches from overriding your choice. You'll see a red dot on the tray icon confirming the lock.
+
+To return to automatic mode, either:
+- Right-click the tray icon and click **Unlock Profile**
+- Press **Ctrl+Alt+L**
+- Select **Ambient** from the tray menu (auto-unlocks and enables ambient mode)
+
+While locked:
+- Scheduled, sunrise/sunset, and ambient switches are all blocked
 - Manual switches (hotkey or tray menu) still work
-- A red dot appears on the tray icon as a reminder
-- Unlock the same way, or it resets on next app launch
+- Lock resets on next app launch
+
+### Ambient Mode
+
+Ambient mode gradually shifts colour temperature throughout the day following the sun's position — warm at night, neutral around noon. It's like f.lux but built in.
+
+Right-click the tray icon and select **Ambient** to enable it (shows a checkmark when active). Ambient appears alongside the profiles in the tray menu, so you can quickly switch between a fixed profile and ambient mode.
+
+Selecting a fixed profile (Work, Code, Game, Cinema) auto-locks and disables ambient adjustments. Selecting Ambient unlocks and lets the automatic colour shifting resume.
 
 ---
 
