@@ -7,7 +7,7 @@ import threading
 import urllib.request
 import json
 
-CURRENT_VERSION = "1.0"
+CURRENT_VERSION = "1.1"
 GITHUB_REPO = "MorlachAU/DisplayManager"
 RELEASES_URL = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
 

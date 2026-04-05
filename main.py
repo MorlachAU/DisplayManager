@@ -161,7 +161,8 @@ def _show_update_notification(root, tray, version, url):
 
     ctk.CTkLabel(dialog, text="Update Available",
                   font=ctk.CTkFont(size=16, weight="bold")).pack(pady=(15, 5))
-    ctk.CTkLabel(dialog, text=f"Display Manager {version} is available.\nYou are running v1.0.",
+    from updater import CURRENT_VERSION
+    ctk.CTkLabel(dialog, text=f"Display Manager {version} is available.\nYou are running v{CURRENT_VERSION}.",
                   text_color="gray").pack(pady=(0, 10))
 
     btnf = ctk.CTkFrame(dialog, fg_color="transparent")

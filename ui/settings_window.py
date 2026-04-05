@@ -726,7 +726,7 @@ class SettingsWindow:
                        command=self._refresh_status).pack(padx=10, pady=3, anchor="w")
 
         # Version
-        ctk.CTkLabel(tab, text="v1.0 — see About tab for more",
+        ctk.CTkLabel(tab, text="v1.1 — see About tab for more",
                       text_color="gray", font=ctk.CTkFont(size=11)).pack(padx=15, pady=(3, 0), anchor="w")
 
     def _open_donate(self):
@@ -860,7 +860,7 @@ class SettingsWindow:
         # App name and version
         ctk.CTkLabel(tab, text="Display Manager",
                       font=ctk.CTkFont(size=22, weight="bold")).pack(pady=(5, 0))
-        ctk.CTkLabel(tab, text="Version 1.0",
+        ctk.CTkLabel(tab, text="Version 1.1",
                       text_color="gray", font=ctk.CTkFont(size=13)).pack(pady=(0, 5))
 
         # Branding

@@ -3,7 +3,7 @@
 ; Compile with: ISCC.exe installer.iss
 
 #define MyAppName "Display Manager"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.1"
 #define MyAppPublisher "MouseWheel Digital"
 #define MyAppURL "https://www.mousewheeldigital.com/"
 #define MyAppExeName "DisplayManager.exe"

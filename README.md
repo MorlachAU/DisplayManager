@@ -73,7 +73,7 @@ Built for anyone who switches between work, coding, and gaming on the same monit
 
 ### Option A: Windows Installer (recommended)
 
-1. Download `DisplayManager_Setup_1.0.exe` from [Releases](../../releases)
+1. Download `DisplayManager_Setup_1.1.exe` from [Releases](../../releases)
 2. Run the installer — choose install location, desktop icon, and auto-start options
 3. Launch from Start Menu or desktop shortcut
 4. The first-run dialog will check your system and guide you through setup
