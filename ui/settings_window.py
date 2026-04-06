@@ -702,7 +702,7 @@ class SettingsWindow:
         hotkey_info = (
             "Profiles: Ctrl+Alt+1/2/3/4\n"
             "Quick Dim: Ctrl+Alt+D    Lock: Ctrl+Alt+L\n"
-            "Panic (Work): Ctrl+Alt+P    Disco: Ctrl+Alt+Shift+D\n"
+            "Panic (Work): Ctrl+Alt+P\n"
             "Brightness: Ctrl+Alt+Shift+Up/Down (±5%), PgUp/PgDn (±15%)\n"
             "Colour Temp: Ctrl+Alt+Shift+Left/Right (±200K)"
         )

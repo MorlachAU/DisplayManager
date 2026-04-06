@@ -153,13 +153,28 @@ class TrayApp:
             )
         ))
 
+        # Resolution submenu — lists available resolutions with checkmark on current
+        import display
+        current_res = display.get_resolution()
+        available_res = display.get_available_resolutions(min_height=720)
+        res_items = []
+        for w, h in available_res:
+            label = f"{w} x {h}"
+            res_items.append(pystray.MenuItem(
+                label,
+                self._make_resolution_handler(w, h),
+                checked=lambda item, rw=w, rh=h: display.get_resolution() == (rw, rh),
+                radio=True,
+            ))
+        if res_items:
+            items.append(pystray.MenuItem("Resolution", pystray.Menu(*res_items)))
+
         lock_text = "Unlock Profile" if self.pm.is_locked() else "Lock Profile"
 
         items.extend([
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("PANIC! (Work mode)", self._on_panic_click),
             pystray.MenuItem(lock_text, self._on_lock_click),
-            pystray.MenuItem("Disco Mode", self._on_disco_click),
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("Settings", self._on_settings_click),
             pystray.Menu.SEPARATOR,
@@ -211,22 +226,12 @@ class TrayApp:
         """PANIC! Instantly switch to Work and close settings."""
         self.pm.switch("Work", force=True)
 
-    def _on_disco_click(self, icon, item):
-        """Easter egg: disco mode!"""
-        import display
-        if not display.is_disco_running():
-            # Remember current profile to restore after
-            active = self.pm.get_active()
-            display.start_disco(duration=5.0)
-            # Restore profile after disco ends
-            import threading
-            def restore():
-                import time
-                time.sleep(5.5)
-                profile = self.pm.config.get_profile(active)
-                if profile:
-                    display.set_colour_temperature(profile.get("colour_temp", 6500))
-            threading.Thread(target=restore, daemon=True).start()
+    def _make_resolution_handler(self, width, height):
+        """Create a handler for switching to a specific resolution."""
+        def handler(icon, item):
+            import display
+            display.set_resolution(width, height)
+        return handler
 
     def _on_lock_click(self, icon, item):
         self.pm.toggle_lock()

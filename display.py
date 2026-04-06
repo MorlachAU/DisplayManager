@@ -355,6 +355,49 @@ def set_refresh_rate(hz):
 
 
 # ============================================================
+# Resolution via Windows Display Settings API
+# ============================================================
+
+DM_PELSWIDTH = 0x80000
+DM_PELSHEIGHT = 0x100000
+
+
+def get_resolution():
+    """Get current display resolution as (width, height)."""
+    dm = DEVMODE()
+    dm.dmSize = ctypes.sizeof(DEVMODE)
+    if _user32.EnumDisplaySettingsW(None, ENUM_CURRENT_SETTINGS, ctypes.byref(dm)):
+        return (dm.dmPelsWidth, dm.dmPelsHeight)
+    return None
+
+
+def get_available_resolutions(min_height=720):
+    """Get list of supported resolutions, filtered to min_height and above."""
+    resolutions = set()
+    dm = DEVMODE()
+    dm.dmSize = ctypes.sizeof(DEVMODE)
+    i = 0
+    while _user32.EnumDisplaySettingsW(None, i, ctypes.byref(dm)):
+        if dm.dmPelsHeight >= min_height:
+            resolutions.add((dm.dmPelsWidth, dm.dmPelsHeight))
+        i += 1
+    return sorted(resolutions, reverse=True)
+
+
+def set_resolution(width, height):
+    """Set display resolution. Returns True on success."""
+    dm = DEVMODE()
+    dm.dmSize = ctypes.sizeof(DEVMODE)
+    if not _user32.EnumDisplaySettingsW(None, ENUM_CURRENT_SETTINGS, ctypes.byref(dm)):
+        return False
+    dm.dmPelsWidth = width
+    dm.dmPelsHeight = height
+    dm.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT
+    result = _user32.ChangeDisplaySettingsW(ctypes.byref(dm), CDS_UPDATEREGISTRY)
+    return result == DISP_CHANGE_SUCCESSFUL
+
+
+# ============================================================
 # Gamma Ramp Watchdog (monitor wake recovery)
 # ============================================================
 

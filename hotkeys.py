@@ -52,13 +52,6 @@ class HotkeyManager:
         except Exception:
             pass
 
-        # Disco mode — easter egg
-        try:
-            keyboard.add_hotkey("ctrl+alt+shift+d", self._on_disco, suppress=False)
-            self._registered.append("ctrl+alt+shift+d")
-        except Exception:
-            pass
-
         # Brightness nudges
         nudge_map = [
             ("ctrl+alt+shift+up",        lambda: self._nudge_brightness(5)),
@@ -109,20 +102,6 @@ class HotkeyManager:
 
     def _on_panic(self):
         self.pm.switch("Work", force=True)
-
-    def _on_disco(self):
-        import display
-        if not display.is_disco_running():
-            active = self.pm.get_active()
-            display.start_disco(duration=5.0)
-            import threading
-            def restore():
-                import time
-                time.sleep(5.5)
-                profile = self.pm.config.get_profile(active)
-                if profile:
-                    display.set_colour_temperature(profile.get("colour_temp", 6500))
-            threading.Thread(target=restore, daemon=True).start()
 
     def _nudge_brightness(self, delta):
         """Nudge brightness via hotkey. Temporary — not saved."""
