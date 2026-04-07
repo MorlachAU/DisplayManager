@@ -3,7 +3,7 @@
 ; Compile with: ISCC.exe installer.iss
 
 #define MyAppName "DisplayPal"
-#define MyAppVersion "1.2.1"
+#define MyAppVersion "1.2.2"
 #define MyAppPublisher "MouseWheel Digital"
 #define MyAppURL "https://www.mousewheeldigital.com/"
 #define MyAppExeName "DisplayPal.exe"

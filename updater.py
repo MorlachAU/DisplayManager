@@ -7,7 +7,7 @@ import threading
 import urllib.request
 import json
 
-CURRENT_VERSION = "1.2.1"
+CURRENT_VERSION = "1.2.2"
 GITHUB_REPO = "MorlachAU/DisplayPal"
 RELEASES_URL = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
 
